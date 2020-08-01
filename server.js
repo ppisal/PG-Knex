@@ -28,18 +28,26 @@ app.get("/seed", function (req, res, next) {
           table.increments("id").primary();
           table.string("name");
           table.string("email");
+          table.timestamp("created_at").defaultTo(db.fn.now());
         })
-        .then(function () {
-          const recordsLength = Array.from(Array(100).keys());
-          const records = recordsLength.map(() => ({
-            name: faker.name.findName(),
-            email: faker.internet.email()
-          }));
-          db("users")
-            .insert(records)
-            .then(() => {
-              res.send("Seeded data");
-            });
+        .then(() => {
+          db.schema.hasTable("items").then(function (exists) {
+            if (!exists) {
+              db.schema
+                .createTable("items", function (table) {
+                  table.increments("id").primary();
+                  table.integer("user_id");
+                  table.string("item");
+                  table.boolean("private");
+                  table.timestamp("created_at").defaultTo(db.fn.now());
+                })
+                .then(() => {
+                  res.send("Created both the tables");
+                });
+            } else {
+              res.send("Table exists - Seeded data");
+            }
+          });
         });
     } else {
       res.send("Table exists - Seeded data");
