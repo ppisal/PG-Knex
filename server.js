@@ -19,7 +19,23 @@ const db = require("knex")({
 });
 
 app.set("db", db);
-app.get("/seed", function (req, res, next) {
+app.get("/users", function (req, res) {
+  const db = req.app.get("db");
+  db.from("users")
+    .select("*")
+    .then(resp => {
+      res.json(resp);
+    });
+});
+app.post("/users", (req, res) => {
+  const db = req.app.get("db");
+  db("users")
+    .insert({ name: "Praveen", emai: "xyx@gamil.com" })
+    .then(resp => {
+      res.json(resp);
+    });
+});
+app.get("/seed", function (req, res) {
   const db = req.app.get("db");
   db.schema.hasTable("users").then(function (exists) {
     if (!exists) {
