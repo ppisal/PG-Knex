@@ -18,6 +18,8 @@ const db = require("knex")({
   }
 });
 
+app.use(express.json());
+
 app.set("db", db);
 app.get("/users", function (req, res) {
   const db = req.app.get("db");
@@ -30,7 +32,7 @@ app.get("/users", function (req, res) {
 app.post("/users", (req, res) => {
   const db = req.app.get("db");
   db("users")
-    .insert({ name: "Praveen", emai: "xyx@gamil.com" })
+    .insert(req.body)
     .then(resp => {
       res.json(resp);
     });
