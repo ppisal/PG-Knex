@@ -1,9 +1,16 @@
 const express = require("express");
 const faker = require("faker");
 const app = express();
+const user = require("./Routes/user");
+
+app.use(express.json());
+
+app.use("/user", user);
+
 app.listen(3002, () => {
   console.log("Hello");
 });
+
 app.get("/", (req, res) => {
   res.json("Hello Team");
 });
@@ -13,31 +20,18 @@ const db = require("knex")({
   connection: {
     host: "localhost",
     user: "postgres",
-    password: "1234",
-    database: "postgres"
-  }
+    database: "postgres",
+  },
 });
-
-app.use(express.json());
 
 app.set("db", db);
-app.get("/users", function (req, res) {
-  const db = req.app.get("db");
-  db.from("users")
-    .select("*")
-    .then(resp => {
-      res.json(resp);
-    });
-});
-app.post("/users", (req, res) => {
-  const db = req.app.get("db");
-  db("users")
-    .insert(req.body)
-    .then(resp => {
-      res.json(resp);
-    });
-});
-app.get("/seed", function (req, res) {
+
+/*
+
+data base seeding 
+
+*/
+app.get("/seed", function (req, res, next) {
   const db = req.app.get("db");
   db.schema.hasTable("users").then(function (exists) {
     if (!exists) {
