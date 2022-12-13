@@ -18,7 +18,7 @@
   },
   "homepage": "https://github.com/ppisal/PG-NodeKnex#readme",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "faker": "^4.1.0",
     "knex": "^0.21.2",
     "nodemon": "^2.0.4",
