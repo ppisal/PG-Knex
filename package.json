@@ -20,7 +20,7 @@
   "dependencies": {
     "express": "^4.17.1",
     "faker": "^4.1.0",
-    "knex": "^0.21.2",
+    "knex": "^2.4.0",
     "nodemon": "^2.0.4",
     "pg": "^8.3.0"
   }
